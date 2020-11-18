@@ -20,6 +20,17 @@ class Game {
      * Starts game
      */
     startGame() {
-        
+        this.board.drawHTMLBoard();
+        this.activePlayer.activeToken.drawHTMLToken();
+        this.ready = true;
+
+    }
+
+    /**
+     * Returns active player
+     * @return {Player} 
+     */
+    get activePlayer() {
+        return this.players.find(player => player.isTurn);
     }
 }
