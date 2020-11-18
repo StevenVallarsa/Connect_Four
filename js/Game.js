@@ -22,6 +22,7 @@ class Game {
     startGame() {
         this.board.drawHTMLBoard();
         this.activePlayer.activeToken.drawHTMLToken();
+        console.log(this.activePlayer.activeToken);
         this.ready = true;
 
     }
@@ -33,4 +34,41 @@ class Game {
     get activePlayer() {
         return this.players.find(player => player.isTurn);
     }
+
+    /**
+     * Keydown event to move token on board
+     */
+    handleKeydown(e) {
+        if (this.ready) {
+            if (e.key === 'ArrowRight') {
+                this.activePlayer.activeToken.moveRight(this.board.columns);
+            } else if (e.key === 'ArrowLeft') {
+                this.activePlayer.activeToken.moveLeft();
+            } else if (e.key === 'ArrowDown') {
+                this.playToken();
+            }
+        }
+    }
+
+    /**
+     * provided
+     */
+    playToken(){
+        let spaces = this.board.spaces;
+        let activeToken = this.activePlayer.activeToken;
+        let targetColumn = spaces[activeToken.columnLocation];
+        let targetSpace = null;
+
+		for (let space of targetColumn) {
+			if (space.token === null) {
+				targetSpace = space;
+			}
+        }
+
+        if (targetSpace !== null) {
+            game.ready = false;
+    		activeToken.drop(targetSpace);   
+        }              
+    }
+    
 }
